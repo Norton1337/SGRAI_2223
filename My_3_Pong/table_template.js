@@ -37,11 +37,20 @@ export default class Table extends THREE.Group {
             - dashSize and gapSize: this.size.y / (2.0 * this.dashes - 1.0)
 
             - follow the instructions in this example to create the dashed line: https://threejs.org/examples/webgl_lines_dashed.html
-
-        geometry = new THREE.BufferGeometry()...;
-        material = new THREE.LineDashedMaterial(...);
-        lines = new THREE.LineSegments(...);
+        */
+        points = [];
+        points.push(new THREE.Vector2(0.0, -this.halfSize.y));
+        points.push(new THREE.Vector2(0.0, this.halfSize.y));
+        geometry = new THREE.BufferGeometry().setFromPoints(points);
+        material = new THREE.LineDashedMaterial( {
+            color: this.color,
+            linewidth: 1,
+            scale: 1,
+            dashSize: this.size.y / (2.0 * this.dashes - 1.0),
+            gapSize: this.size.y / (2.0 * this.dashes - 1.0)
+        } );
+        lines = new THREE.LineSegments(geometry, material);
         lines.computeLineDistances();
-        this.add(lines); */
+        this.add(lines); 
     }
 }

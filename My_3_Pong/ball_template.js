@@ -49,10 +49,10 @@ export default class Ball extends THREE.Mesh {
                 - (x0, y0) are the ball's current center coordinates
                 - r = (ball speed * elapsed time) is the distance covered by the ball
                 - t is the ball direction (expressed in radians)
-
-        const coveredDistance = ...;
-        const centerIncrement = new THREE.Vector2(...);
-        this.center.add(...); */
+        */
+        const coveredDistance = this.speed * deltaT;
+        const centerIncrement = new THREE.Vector2(coveredDistance * Math.cos(this.direction), coveredDistance * Math.sin(this.direction));
+        this.center.add(centerIncrement); 
 
         /* To-do #11 - Check if the ball hit player 1 racket
             - the hit depends on the ball direction (it must be moving to the left), ball position, ball radius, player 1 racket's position and dimension
@@ -62,15 +62,16 @@ export default class Ball extends THREE.Mesh {
                 this.radius (the ball's radius)
                 this.player1.center.x and .y (player 1 racket's center position)
                 this.player1.halfSize.x and .y (player 1 racket's half dimensions)
-
-        if (...) { // The ball is moving to the left
-            if (... &&
-                ... &&
-                ... &&
-                ...) { // The ball hit player 1 racket
-                this.direction = ...; // The ball rebounds
+        */
+        if (centerIncrement.x<0) { // The ball is moving to the left~
+            if (this.center.x - this.radius < this.player1.center.x +this.player1.halfSize.x &&
+                this.center.y + this.radius >this.player1.center.y-this.player1.halfSize.y &&
+                this.center.y - this.radius < this.player1.center.y + this.player1.halfSize.y)
+             { // The ball hit player 1 racket
+                this.direction = -this.direction // The ball rebounds
+                this.speed = -this.speed
             }
-        } */
+        } 
 
         /* To-do #12 - Check if the ball hit player 2 racket
             - the hit depends on the ball direction (it must be moving to the right), ball position, ball radius, player 2 racket's position and dimension
@@ -80,15 +81,16 @@ export default class Ball extends THREE.Mesh {
                 this.radius (the ball's radius)
                 this.player2.center.x and .y (player 2 racket's center position)
                 this.player2.halfSize.x and .y (player 2 racket's half dimensions)
-
+        */
         else { // The ball is moving to the right
-            if (... &&
-                ... &&
-                ... &&
-                ...) { // The ball hit player 2 racket
-                this.direction = ...;  // The ball rebounds
+            if (this.center.x + this.radius > this.player2.center.x -this.player2.halfSize.x &&
+                this.center.y + this.radius >this.player2.center.y-this.player2.halfSize.y &&
+                this.center.y - this.radius < this.player2.center.y + this.player2.halfSize.y)
+                { // The ball hit player 2 racket
+                this.direction = -this.direction // The ball rebounds
+                this.speed = -this.speed
             }
-        } */
+        } 
 
         /* To-do #10 - Check if the ball hit the sidelines
             - the hit depends on the ball direction (down or up), ball position, ball radius and table dimension
@@ -97,10 +99,11 @@ export default class Ball extends THREE.Mesh {
                 this.center.y (the ball's center Y-position)
                 this.radius (the ball's radius)
                 this.table.halfSize.y (the table's half Y-dimension)
-
-        if (... && ... || // The ball is moving down and hit the bottom line
-            ... && ...) { // The ball is moving up and hit the top line
-            this.direction = ...; // The ball rebounds
+        */
+        if (centerIncrement.y<0 && this.center.y-this.radius <= -this.table.halfSize.y ||  // The ball is moving down and hit the bottom line
+            centerIncrement.y>0 && this.center.y+this.radius >= this.table.halfSize.y)
+            { // The ball is moving up and hit the top line
+            this.direction = -this.direction; // The ball rebounds
             if (centerIncrement.x < 0.0) {
                 this.direction += 2.0 * Math.PI; // This is to ensure that the ball direction stays within the interval 0.0 <= direction < 2.0 * π (pi)
             }
@@ -109,7 +112,7 @@ export default class Ball extends THREE.Mesh {
         /* To-do #13 - Set the ball's new center position:
             - x: this.center.x
             - y: this.center.y
-
-        this.position.set(...); */
+        */
+        this.position.set(this.center.x, this.center.y); 
     }
 }
