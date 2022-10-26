@@ -128,45 +128,45 @@ export default class Maze {
     distanceToWestWall(position) {
         const indices = this.cartesianToCell(position);
         if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {
+            console.log(position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0)
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;
     }
-    /*
+    
     distanceToEastWall(position) {
         const indices = this.cartesianToCell(position);
         indices[1]++;
-        if (... || ...) {
-            return ...;
-        }
-        return ...;
+        if(this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3)
+            return position.x - this.cellToCartesian(indices).x - this.scale.x / 2.0;
+        return Infinity;
     }
 
     distanceToNorthWall(position) {
-        const indices = ...;
-        if (... || ...) {
-            return ...;
+        const indices = this.cartesianToCell(position);
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+            return position.z - this.cellToCartesian(indices).z + this.scale.z / 2.0;
         }
-        return ...;
+        return Infinity
     }
 
     distanceToSouthWall(position) {
-        const indices = ...;
-        ...++;
-        if (... || ...3) {
-            return ...z;
+        const indices = this.cartesianToCell(position);
+        indices[0]++;
+        if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
+            return position.z - this.cellToCartesian(indices).z - this.scale.z / 2.0;
         }
-        return ...;
-    } */
+        return Infinity;
+    } 
 
     foundExit(position) {
-        return false;
+
         /* To-do #42 - Check if the player found the exit
             - assume that the exit is found if the distance between the player position and the exit location is less than (0.5 * maze scale) in both the X- and Z-dimensions
             - player position: position
             - exit location: this.exitLocation
             - maze scale: this.scale
-            - remove the previous instruction and replace it with the following one (after completing it)
-        return ... < ... && ... */
+            - remove the previous instruction and replace it with the following one (after completing it) */
+        return Math.abs(position.x - this.exitLocation.x) < 0.5 * this.scale.x && Math.abs(position.z - this.exitLocation.z) < 0.5 * this.scale.z; 
     };
 }

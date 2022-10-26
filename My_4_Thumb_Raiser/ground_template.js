@@ -37,8 +37,8 @@ export default class Ground {
         const material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
         this.object = new THREE.Mesh(geometry, material);
         this.object.rotation.x = -Math.PI / 2.0;
-        /* To-do #33 - Set the ground box to receive shadows but not cast them
-        this.object.castShadow = ...;
-        this.object.receiveShadow = ...; */
+        /* To-do #33 - Set the ground box to receive shadows but not cast them */
+        this.object.castShadow = false;
+        this.object.receiveShadow = true; 
     }
 }

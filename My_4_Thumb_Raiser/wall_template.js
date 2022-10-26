@@ -34,9 +34,9 @@ export default class Wall {
         let material = new THREE.MeshPhongMaterial({ color: 0xffffff , map: texture});
         let face = new THREE.Mesh(geometry, material);
         face.position.set(0.0, 0.0, 0.025);
-        /* To-do #34 - Set the front face to cast and receive shadows
-        face... = ...;
-        face... = ...; */
+        /* To-do #34 - Set the front face to cast and receive shadows*/
+        face.castShadow = true;
+        face.receiveShadow = true;
         this.object.add(face);
 
         // Create the rear face (a rectangle)
@@ -79,9 +79,9 @@ export default class Wall {
         geometry.setIndex(indices);
         material = new THREE.MeshPhongMaterial({ color: 0x6b554b });
         face = new THREE.Mesh(geometry, material);
-        /* To-do #35 - Set the left faces to cast and receive shadows
-        face... = ...;
-        face... = ...; */
+        /* To-do #35 - Set the left faces to cast and receive shadows*/
+        face.castShadow = true;
+        face.receiveShadow = true;
         this.object.add(face);
 
         // Create the two right faces (a four-triangle mesh)
@@ -117,9 +117,9 @@ export default class Wall {
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
         face = new THREE.Mesh(geometry, material); 
-        /* To-do #36 - Set the top face to cast and receive shadows
-        face... = ...;
-        face... = ...; */
+        /* To-do #36 - Set the top face to cast and receive shadows*/
+        face.castShadow = true;
+        face.receiveShadow = true;
         this.object.add(face);
     }
 }

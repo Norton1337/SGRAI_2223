@@ -19,6 +19,7 @@ export default class Fog {
             - fog color: this.color
             - near: this.near (the minimum distance to start applying fog)
             - far: this.far (the maximum distance at which fog stops being calculated and applied)
-        this.object = new THREE.Fog(..., ..., ...); */
+        */
+        this.object = new THREE.Fog(this.color, this.near, this.far); 
     }
 }

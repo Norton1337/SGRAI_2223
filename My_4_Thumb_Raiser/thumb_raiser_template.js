@@ -202,9 +202,9 @@ export default class ThumbRaiser {
         // Create a renderer and turn on shadows in the renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.autoClear = false;
-        /* To-do #30 - Turn on shadows in the renderer and filter shadow maps using the Percentage-Closer Filtering (PCF) algorithm
-        this.renderer.shadowMap.enabled = ...;
-        this.renderer.shadowMap.type = ...; */
+        /* To-do #30 - Turn on shadows in the renderer and filter shadow maps using the Percentage-Closer Filtering (PCF) algorithm*/
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 
@@ -436,9 +436,11 @@ export default class ThumbRaiser {
             /* To-do #41 - Toggle the user interface visibility
                 - event code: this.player.keyCodes.userInterface
                 - state: true
-            if (... && ...) { // Display / hide user interface
+            */
+            if(event.code == this.player.keyCodes.userInterface && state){
                 this.setUserInterfaceVisibility(!this.userInterfaceCheckBox.checked);
-            } */
+            }
+
             if (event.code == this.player.keyCodes.miniMap && state) { // Display / hide mini-map
                 this.setMiniMapVisibility(!this.miniMapCheckBox.checked);
             }
@@ -642,13 +644,14 @@ export default class ThumbRaiser {
             5 - Set the final action:
                 - action: "Dance"
                 - duration: 0.2 seconds
-        this.fog.enabled = ...;
-        this.thirdPersonViewCamera.setOrientation(new Orientation(..., ...));
-        this.thirdPersonViewCamera.setDistance(...);
-        this.thirdPersonViewCamera.setZoom(...);
-        this.setActiveViewCamera(...);
-        this.setViewMode(...);
-        this.animations.fadeToAction(..., ...); */
+        */
+        this.fog.enabled = false;
+        this.thirdPersonViewCamera.setOrientation(new Orientation(-180.0, this.thirdPersonViewCamera.initialOrientation.v));
+        this.thirdPersonViewCamera.setDistance(this.thirdPersonViewCamera.initialDistance);
+        this.thirdPersonViewCamera.setZoom(2.0);
+        this.setActiveViewCamera(this.thirdPersonViewCamera);
+        this.setViewMode(false);
+        this.animations.fadeToAction("Dance", 0.2); 
     }
 
     collision(position) {
@@ -685,7 +688,8 @@ export default class ThumbRaiser {
 
                 /* To-do #40 - Create the user interface
                     - parameters: this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations
-                this.userInterface = new UserInterface(...); */
+                */
+                this.userInterface = new UserInterface(this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations); 
 
                 // Start the game
                 this.gameRunning = true;
@@ -708,19 +712,19 @@ export default class ThumbRaiser {
                             covered distance = walking speed * elapsed time
                         - walking speed: this.player.walkingSpeed
                         - elapsed time: deltaT*/
-                    let coveredDistance = this.player.walkingSpeed * deltaT; 
+                    let coveredDistance = this.player.walkingSpeed * deltaT;
                     /* To-do #13 - Compute the player's direction increment
                         - assume that the player is turning left or right while walking:
                             direction increment = turning speed * elapsed time
                         - turning speed: this.player.turningSpeed
                         - elapsed time: deltaT*/
-                    let directionIncrement = this.player.turningSpeed * deltaT; 
+                    let directionIncrement = this.player.turningSpeed * deltaT;
                     if (this.player.keyStates.run) {
                         /* To-do #14 - Adjust the distance covered by the player
                             - now assume that the player is running:
                             - multiply the covered distance by this.player.runningFactor
                         */
-                        coveredDistance *= this.player.runningFactor; 
+                        coveredDistance *= this.player.runningFactor;
                         /* To-do #15 - Adjust the player's direction increment
                             - now assume that the player is running:
                             - multiply the direction increment by this.player.runningFactor
@@ -780,6 +784,7 @@ export default class ThumbRaiser {
                         let x = coveredDistance * Math.sin(direction) + this.player.position.x;
                         let z = coveredDistance * Math.cos(direction) + this.player.position.z;
                         const newPosition = new THREE.Vector3(x, 0, z).add(this.player.position);
+                        
                         /* To-do #19 - If the player collided with a wall, then trigger the death action; else, trigger either the walking or the running action
                             - death action: "Death"
                             - walking action: "Walking"
@@ -861,12 +866,13 @@ export default class ThumbRaiser {
             /* To-do #39 - If the fog is enabled, then assign it to the scene; else, assign null
                 - fog enabled: this.fog.enabled
                 - fog: this.fog.object
-            if (...) {
-                this.scene3D... = ...;
+            */
+            if (this.fog.enabled) {
+                this.scene3D.fog = this.fog.object;
             }
             else {
-                this.scene3D... = ...;
-            } */
+                this.scene3D.fog = null;
+            } 
             let cameras;
             if (this.multipleViewsCheckBox.checked) {
                 cameras = [this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera];
