@@ -655,15 +655,6 @@ export default class ThumbRaiser {
     }
 
     collision(position) {
-        console.log(Math.abs(this.maze.distanceToWestWall(position)));
-        console.log(Math.abs(this.maze.distanceToEastWall(position)));
-        console.log(Math.abs(this.maze.distanceToSouthWall(position)));
-        console.log(Math.abs(this.maze.distanceToNorthWall(position)));
-        
-        console.log("");
-        console.log(this.player.radius);
-        console.log("");
-        console.log("");
         /* To-do #24 - Check if the player collided with a wall
             - assume that a collision is detected if the distance between the player position and any of the walls is less than the player radius.
             - player position: position
@@ -858,6 +849,7 @@ export default class ThumbRaiser {
                     */
                     this.player.object.position.copy(this.player.position);
                     this.player.object.orientation = direction - this.player.initialDirection;
+                    console.log(this.player.object.orientation);
                     
                 }
             }
