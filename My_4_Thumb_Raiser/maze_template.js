@@ -128,7 +128,6 @@ export default class Maze {
     distanceToWestWall(position) {
         const indices = this.cartesianToCell(position);
         if (this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3) {
-            console.log(position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0)
             return position.x - this.cellToCartesian(indices).x + this.scale.x / 2.0;
         }
         return Infinity;

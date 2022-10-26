@@ -655,15 +655,24 @@ export default class ThumbRaiser {
     }
 
     collision(position) {
+        console.log(Math.abs(this.maze.distanceToWestWall(position)));
+        console.log(Math.abs(this.maze.distanceToEastWall(position)));
+        console.log(Math.abs(this.maze.distanceToSouthWall(position)));
+        console.log(Math.abs(this.maze.distanceToNorthWall(position)));
+        
+        console.log("");
+        console.log(this.player.radius);
+        console.log("");
+        console.log("");
         /* To-do #24 - Check if the player collided with a wall
             - assume that a collision is detected if the distance between the player position and any of the walls is less than the player radius.
             - player position: position
             - player radius: this.player.radius
             - remove the previous instruction and replace it with the following one (after completing it)*/
-        return  this.maze.distanceToWestWall(position) < this.player.radius ||
-                this.maze.distanceToEastWall(position) < this.player.radius ||
-                this.maze.distanceToSouthWall(position) < this.player.radius ||
-                this.maze.distanceToNorthWall(position) < this.player.radius; 
+        return  Math.abs(this.maze.distanceToWestWall(position)) < this.player.radius ||
+                Math.abs(this.maze.distanceToEastWall(position)) < this.player.radius ||
+                Math.abs(this.maze.distanceToSouthWall(position)) < this.player.radius ||
+                Math.abs(this.maze.distanceToNorthWall(position)) < this.player.radius; 
     }
 
     update() {
@@ -729,7 +738,7 @@ export default class ThumbRaiser {
                             - now assume that the player is running:
                             - multiply the direction increment by this.player.runningFactor
                         */
-                       directionIncrement *= this.player.runningFactor; 
+                        directionIncrement *= this.player.runningFactor; 
                     }
                     /* To-do #16 - Check if the player is turning left or right and update the player direction accordingly by adding or subtracting the direction increment
                         - left key state: this.player.keyStates.left
@@ -763,8 +772,9 @@ export default class ThumbRaiser {
                             - t is the player direction (expressed in radians)
                     */
                     if (this.player.keyStates.backward) { // The player is moving backward
-                        let x = coveredDistance * Math.sin(direction) + this.player.position.x;
-                        let z = coveredDistance * Math.cos(direction) + this.player.position.z;
+                        
+                        let x = -coveredDistance * Math.sin(direction);
+                        let z = -coveredDistance * Math.cos(direction);
                         const newPosition = new THREE.Vector3(x, this.player.position.y, z).add(this.player.position);
                         /* To-do #18 - If the player collided with a wall, then trigger the death action; else, trigger either the walking or the running action
                             - death action: "Death"
@@ -774,31 +784,35 @@ export default class ThumbRaiser {
                         */
                         if (this.collision(newPosition)) {
                             this.animations.fadeToAction("Death", 0.2);
-                }
-                else {
-                    this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
-                    this.player.position = newPosition;
-                }
-            }  
+                        }
+                        else {
+
+                            this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
+                            this.player.position = newPosition;
+                        }
+                    }  
                     else if (this.player.keyStates.forward) { // The player is moving forward
-                        let x = coveredDistance * Math.sin(direction) + this.player.position.x;
-                        let z = coveredDistance * Math.cos(direction) + this.player.position.z;
-                        const newPosition = new THREE.Vector3(x, 0, z).add(this.player.position);
+                        
+                        let x = coveredDistance * Math.sin(direction);
+                        let z = coveredDistance * Math.cos(direction);
+
+                        const newPosition = new THREE.Vector3(x, this.player.position.y, z).add(this.player.position);
                         
                         /* To-do #19 - If the player collided with a wall, then trigger the death action; else, trigger either the walking or the running action
                             - death action: "Death"
                             - walking action: "Walking"
                             - running action: "Running"
                             - duration: 0.2 seconds*/
-                        if (this.collision(newPosition)) {
-                            this.animations.fadeToAction("Death", 0.2);
-                }
-                else {
-                    this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
-                    this.player.position = newPosition;
-                }
-            }
-            else 
+                            
+                            if (this.collision(newPosition)) {   
+                                this.animations.fadeToAction("Death", 0.2);
+                            }
+                            else {
+                                this.animations.fadeToAction(this.player.keyStates.run ? "Running" : "Walking", 0.2);
+                                this.player.position = newPosition;
+                            }
+                    }
+                    else 
                     /* To-do #20 - Check the player emotes
                         - jump key state: this.player.keyStates.jump
                         - jump emote: "Jump"
@@ -813,24 +827,24 @@ export default class ThumbRaiser {
                         - thumbs up key state: this.player.keyStates.thumbsUp
                         - thumbs up emote: "ThumbsUp"
                         - duration: 0.2 seconds*/
-                if (this.player.keyStates.jump) {
-                    this.animations.fadeToAction("Jump", 0.2);
-                }
-                else if (this.player.keyStates.yes) {
-                    this.animations.fadeToAction("Yes", 0.2);
-                }
-                else if (this.player.keyStates.no) {
-                    this.animations.fadeToAction("No", 0.2);
-                }
-                else if (this.player.keyStates.wave) {
-                    this.animations.fadeToAction("Wave", 0.2);
-                }
-                else if (this.player.keyStates.punch) {
-                    this.animations.fadeToAction("Punch", 0.2);
-                }
-                else if (this.player.keyStates.thumbsUp) {
-                    this.animations.fadeToAction("ThumbsUp", 0.2);
-                } 
+                    if (this.player.keyStates.jump) {
+                        this.animations.fadeToAction("Jump", 0.2);
+                    }
+                    else if (this.player.keyStates.yes) {
+                        this.animations.fadeToAction("Yes", 0.2);
+                    }
+                    else if (this.player.keyStates.no) {
+                        this.animations.fadeToAction("No", 0.2);
+                    }
+                    else if (this.player.keyStates.wave) {
+                        this.animations.fadeToAction("Wave", 0.2);
+                    }
+                    else if (this.player.keyStates.punch) {
+                        this.animations.fadeToAction("Punch", 0.2);
+                    }
+                    else if (this.player.keyStates.thumbsUp) {
+                        this.animations.fadeToAction("ThumbsUp", 0.2);
+                    } 
                     /* To-do #21 - If the player is not moving nor emoting, then trigger the idle action
                         - idle ation: "Idle"
                         - duration: 0.6 or 0.2 seconds, depending whether the player is recovering from a death action (long recovery) or from some other action (short recovery)
