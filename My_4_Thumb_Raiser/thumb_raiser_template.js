@@ -857,7 +857,7 @@ export default class ThumbRaiser {
                         - new orientation:  direction - this.player.initialDirection
                     */
                     this.player.object.position.copy(this.player.position);
-                    this.player.object.orientation = direction - this.player.initialDirection;
+                    this.player.object.rotation.y = direction - this.player.initialDirection;
                     
                 }
             }

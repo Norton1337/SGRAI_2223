@@ -53,7 +53,7 @@ export default class Maze {
                         - maze height: description.size.height*/
                     if (description.map[j][i] == 2 || description.map[j][i] == 3) {
                         wallObject = maze.wall.object.clone();
-                        wallObject.position.set(i - description.size.width/2 + 0.5, 0 , j - description.size.height/2);
+                        wallObject.position.set(i - description.size.width/2 + 0.5, 0.5 , j - description.size.height/2);
                         maze.object.add(wallObject);
                     }
                     /* To-do #6 - Create the west walls
@@ -64,7 +64,7 @@ export default class Maze {
                     if (description.map[j][i] == 1 || description.map[j][i] == 3) {
                         wallObject = maze.wall.object.clone();
                         wallObject.rotateY(Math.PI/2);
-                        wallObject.position.set(i - description.size.width/2, 0 , j - description.size.height/2 + 0.5);
+                        wallObject.position.set(i - description.size.width/2, 0.5 , j - description.size.height/2 + 0.5);
                         maze.object.add(wallObject);
                     } 
                 }
