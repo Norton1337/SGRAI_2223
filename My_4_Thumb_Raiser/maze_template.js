@@ -137,7 +137,7 @@ export default class Maze {
         const indices = this.cartesianToCell(position);
         indices[1]++;
         if(this.map[indices[0]][indices[1]] == 1 || this.map[indices[0]][indices[1]] == 3)
-            return position.x - this.cellToCartesian(indices).x - this.scale.x / 2.0;
+            return position.x+1 - this.cellToCartesian(indices).x - this.scale.x / 2.0;
         return Infinity;
     }
 
@@ -153,7 +153,7 @@ export default class Maze {
         const indices = this.cartesianToCell(position);
         indices[0]++;
         if (this.map[indices[0]][indices[1]] == 2 || this.map[indices[0]][indices[1]] == 3) {
-            return position.z - this.cellToCartesian(indices).z - this.scale.z / 2.0;
+            return position.z+1  - this.cellToCartesian(indices).z - this.scale.z / 2.0;
         }
         return Infinity;
     } 
